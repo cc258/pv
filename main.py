@@ -1,0 +1,42 @@
+import uvicorn
+from fastapi import FastAPI, Request, Response, HTTPException
+from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
+
+# 环境
+from core.config import settings
+
+# 路由
+from core.router import router
+
+# 数据库
+from db.database import create_tables
+
+# 创建数据库表
+create_tables()
+
+# 创建APP
+app = FastAPI(
+    title="PV",
+    description="Preview video project",
+    version="0.0.1",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
+
+# 设置允许跨域
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# 路由
+app.include_router(router, prefix=settings.API_PREFIX)
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
