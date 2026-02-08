@@ -6,7 +6,7 @@
 
 uv init .
 
-uv add "fastapi[all]" langchain langchain-openai python-dotenv sqlalchemy uvicorn psycopg2-binary pydantic-settings aioredis httpx
+uv add "fastapi[all]" langchain langchain-openai python-dotenv sqlmodel alembic uvicorn psycopg2-binary pydantic-settings aioredis httpx
 
 ```
 
@@ -15,7 +15,6 @@ uv add "fastapi[all]" langchain langchain-openai python-dotenv sqlalchemy uvicor
 - api
 - core
 - modals
-- schemas
 ```
 
 ### Step3 按照顺序写代码
@@ -34,8 +33,6 @@ uv add "fastapi[all]" langchain langchain-openai python-dotenv sqlalchemy uvicor
 ------database.py
 - models
 ------models.py
-- schemas
-------schemas.py
 ```
 
 ### 浏览效果
@@ -43,4 +40,26 @@ uv add "fastapi[all]" langchain langchain-openai python-dotenv sqlalchemy uvicor
 ```shell
 http://127.0.0.1:8000/api/users/1
 ```
+
+
+# alembic
+
+### installation
+dependence SqlAchemy
+
+```python
+# 添加 `alembic`
+uv add alembic
+
+# 激活当前环境
+source .venv/bin/activate
+
+# 初始化，并建立 `alembic` 目录
+alembic init alembic
+
+```
+
+
+
+
 

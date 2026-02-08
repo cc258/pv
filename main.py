@@ -10,10 +10,12 @@ from core.config import settings
 from core.router import router
 
 # 数据库
-from db.database import create_tables
+from db.database import create_db_and_tables, drop_db
 
 # 创建数据库表
-create_tables()
+# drop_db()
+create_db_and_tables()
+
 
 # 创建APP
 app = FastAPI(
