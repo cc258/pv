@@ -8,6 +8,16 @@ uv init .
 
 uv add "fastapi[all]" langchain langchain-openai python-dotenv sqlmodel alembic uvicorn psycopg2-binary pydantic-settings aioredis httpx
 
+还要设置 pycharm的解释器 > 设置 > 已经存在的本地 > uv > 在项目对应.venv， 比如
+
+/Users/charlie/Documents/github/pv/.venv/bin/python3.13
+
+完成后，系统会重新构建，等待完成，
+需要更新pycharm，调试启动应用的配置，设定为当前项目的配置，重启OK。
+
+如果要升级当前的依赖
+uv sync --upgrade
+
 ```
 
 ### Step2 建立目录
@@ -27,10 +37,10 @@ uv add "fastapi[all]" langchain langchain-openai python-dotenv sqlmodel alembic 
 
 ### Step4 加入数据库
 ```shell
+- core
+------deps.py
 - api
 ------users.py
-- db
-------database.py
 - models
 ------models.py
 ```
@@ -51,13 +61,18 @@ dependence SqlAchemy
 # 添加 `alembic`
 uv add alembic
 
-# 激活当前环境
-source .venv/bin/activate
-
 # 初始化，并建立 `alembic` 目录
 alembic init alembic
 
 ```
+
+# pyjwt
+
+```python
+uv add pyjwt
+```
+
+
 
 
 

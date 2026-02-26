@@ -1,9 +1,12 @@
 from logging.config import fileConfig
 
+from datetime import datetime  # 新增：导入datetime
+
 # 导入SQLModel
 from sqlmodel import SQLModel
 # 导入所有模型，确保 MetaData 包含所有表定义
-from models.models import User, Roles
+from apis.models.models import User, Roles
+from apis.models.videos import Video
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -54,6 +57,9 @@ def run_migrations_offline() -> None:
     with context.begin_transaction():
         context.run_migrations()
 
+def generate_revision_id():
+    # 带横线的时间格式，更易读
+    return datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode.
@@ -70,7 +76,12 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, target_metadata=target_metadata,
+            # 自定义时间标记 Begin
+            revision_context = {
+                "revision_id_generator": generate_revision_id
+            },
+            # 自定义时间标记 End
         )
 
         with context.begin_transaction():

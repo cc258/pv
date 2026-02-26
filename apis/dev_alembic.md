@@ -42,15 +42,18 @@ target_metadata = SQLModel.metadata
 # Usage
 
 生成变更集合, 生成变更的脚本
+
 ```shell
 
 alembic revision --autogenerat -m "create account table"
+
 ```
 
 执行变更
 
 ```shell
 alembic upgrade head
+
 ```
 
 
@@ -63,6 +66,7 @@ alembic upgrade head
 
 ```python
 alembic list_templates
+
 ```
 
 上述布局使用了一个名为 `generic` 的布局模板生成。
@@ -97,30 +101,39 @@ alembic init --template generic ./scripts
 # 创建迁移脚本
 
 ```python
+
 Create a Migration Script
+
 ```
 
 有了环境，我们可以创建新的修订版
 
 ```python
+
 $ alembic revision -m "create account table"
+
 ```
+
 生成了一个新文件
+
 1975ea83b712_create_account_table.py
 
 
 # 进行我们的第一次迁移
 
 ```
+
 $ alembic upgrade head
 INFO  [alembic.context] Context class PostgresqlContext.
 INFO  [alembic.context] Will assume transactional DDL.
 INFO  [alembic.context] Running upgrade None -> 1975ea83b712
+
 ```
 
 # 进行我们的第二次迁移
 
 ```python
+
 $ alembic revision -m "Add a column"
 Generating /path/to/yourapp/alembic/versions/ae1027a6acf_add_a_column.py...
 done
@@ -138,6 +151,7 @@ INFO  [alembic.context] Running upgrade 1975ea83b712 -> ae1027a6acf
 # 升级
 
 ```python
+
 $ alembic upgrade +2
 
 ```
@@ -145,6 +159,7 @@ $ alembic upgrade +2
 # 降级
 
 ```python
+
 $ alembic downgrade -1
 
 ```
@@ -152,14 +167,18 @@ $ alembic downgrade -1
 # 查看当前版本
 
 ```
+
 $ alembic current
+
 ```
 
 
 # 历史记录
 
 ```
+
 $ alembic history --verbose
+
 ```
 
 

@@ -4,13 +4,13 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 # 环境
-from core.config import settings
+from apis.core.config import settings
 
 # 路由
-from core.router import router
+from apis.core.router import router
 
 # 数据库
-from db.database import create_db_and_tables, drop_db
+from apis.core.deps import create_db_and_tables, drop_db
 
 # 创建数据库表
 # drop_db()
@@ -20,7 +20,7 @@ create_db_and_tables()
 # 创建APP
 app = FastAPI(
     title="PV",
-    description="Preview video project",
+    description="Popular video project",
     version="0.0.1",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -36,7 +36,7 @@ app.add_middleware(
 )
 
 # 路由
-app.include_router(router, prefix=settings.API_PREFIX)
+app.include_router(router, prefix=settings.API_V1)
 
 
 if __name__ == "__main__":

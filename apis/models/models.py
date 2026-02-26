@@ -2,6 +2,26 @@ from datetime import datetime, UTC
 from pydantic import EmailStr
 from sqlmodel import SQLModel, Field, Relationship
 
+
+# Generic message
+class Message(SQLModel):
+    message: str
+
+
+# JSON payload containing access token
+class Token(SQLModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
+# Contents of JWT token
+class TokenPayload(SQLModel):
+    sub: str | None = None
+
+class NewPassword(SQLModel):
+    token: str
+    new_password: str = Field(min_length=6, max_length=128)
+
 class UserBase(SQLModel):
 
     user_type: str = Field(max_length=64)
