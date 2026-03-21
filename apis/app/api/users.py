@@ -2,10 +2,10 @@ import uuid
 from fastapi import Depends, APIRouter, Request, Query, APIRouter, Security, HTTPException
 from sqlmodel import Session, select
 
-from apis.core.deps import sessionDEP
-from apis.models.models import User, UserBase, UserCreate, UserUpdate, UserInfo, UserInfoAll, Roles, RoleBase, RoleCreate, RoleUpdate, RoleInfo, RoleInfoAll
+from apis.app.core.deps import sessionDEP
+from apis.app.models.models import User, UserBase, UserCreate, UserUpdate, UserInfo, UserInfoAll, Roles, RoleBase, RoleCreate, RoleUpdate, RoleInfo, RoleInfoAll
 
-from apis.core.config import settings
+from apis.app.core.config import settings
 from typing import List
 
 router = APIRouter(prefix="/users", tags=["users"])

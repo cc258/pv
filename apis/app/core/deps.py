@@ -6,8 +6,8 @@ from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 
-from apis.core.config import settings
-from apis.models.models import TokenPayload
+from apis.app.core.config import settings
+from apis.app.models.models import TokenPayload
 
 
 sqlite_file_name = "apis/database.db"

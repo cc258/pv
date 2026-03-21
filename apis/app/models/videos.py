@@ -8,7 +8,9 @@ class VideoBase(SQLModel):
     video_name: str = Field(default=None, nullable=False)
     link: str = Field(default=None)
     year: int = Field(default=None)
+    cover: str = Field(default=None)
 
+    tags: str = Field(default=None)
     categories: str = Field(default=None, description="分类")
     stars: int = Field(default=1, gt=0, le=5, description="评分（1-5分）")
     comment: str = Field(default=None)

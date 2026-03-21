@@ -4,13 +4,13 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 # 环境
-from apis.core.config import settings
+from apis.app.core.config import settings
 
 # 路由
-from apis.core.router import router
+from apis.app.core.router import router
 
 # 数据库
-from apis.core.deps import create_db_and_tables, drop_db
+from apis.app.core.deps import create_db_and_tables, drop_db
 
 # 创建数据库表
 # drop_db()
