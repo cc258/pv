@@ -53,6 +53,7 @@ async def put_video(*, session: sessionDEP, video_id: uuid.UUID, video_in: Video
         raise HTTPException(status_code=404, detail="Video not found")
 
     video_dict = video_in.model_dump(exclude_unset=True)
+    print(video_dict)
     video.sqlmodel_update(video_dict)
     session.add(video)
     session.commit()
