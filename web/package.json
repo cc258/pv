@@ -10,8 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "axios": "^0.27.2",
+    "jotai": "^1.7.7",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^6.3.0",
+    "swiper": "^8.3.1",
+    "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",

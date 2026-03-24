@@ -15,6 +15,9 @@ class VideoBase(SQLModel):
     stars: int = Field(default=1, gt=0, le=5, description="评分（1-5分）")
     comment: str = Field(default=None)
 
+    class Config:
+        extra = "allow"
+
 
 class VideoCreate(VideoBase):
     pass
