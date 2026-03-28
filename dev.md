@@ -78,3 +78,49 @@ uv add pyjwt
 
 
 
+---
+
+# 2. web后台搭建：
+
+`manage`目录
+
+使用Arco pro的React，vite框架
+
+# 脚手架的方式不容易出错
+
+```
+npm create arco-pro@latest
+```
+
+按照步骤，安装完整版本
+
+注意2个要点，使用官方推荐的pnpm,安装dayjs
+
+具体执行下面的操作
+
+```
+cd 你的目录
+npm -g install pnpm
+pnpm i dayjs
+pnpm dev || pnpm start
+```
+
+# 3.Web前台展示
+
+`web`目录
+
+使用Vite构建React项目，
+
+加入Tailwindcss
+
+比较简单好用。
+
+
+
+
+
+
+
+
+
+
