@@ -29,7 +29,7 @@ function SearchTable() {
 
   const view = useCallback(async (record, type) => {
     console.log(record, type);
-    history.push(`/list/video-details/${record.id}`);
+    history.push(`/list/video-details/${record.id}`, {...record} );
   }, [history]);
 
   const columns = useMemo(() => getColumns(t, view), [t]);
