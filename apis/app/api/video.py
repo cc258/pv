@@ -19,6 +19,7 @@ async def get_video_list(
         page: int = Query(default=1, ge=1, description="页码"),
         size: int = Query(default=10, ge=0, description="每页显示数目")
 ):
+    print("--------------", page, size)
     query = session.query(Video)
     if name:
         query = query.filter(Video.video_name.like(f"%{name.strip()}%"))

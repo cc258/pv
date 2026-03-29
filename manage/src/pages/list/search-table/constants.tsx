@@ -27,7 +27,7 @@ export function getColumns(
       title: '',
       dataIndex: 'index',
       render: (_, __, index: number) => <Text>{index + 1}</Text>,
-      headerCellStyle: { width: '20px', textAlign: 'center' },
+      headerCellStyle: { width: '50px', textAlign: 'center' },
       // render: (value) => <Text copyable>{value}</Text>,
     },
     {

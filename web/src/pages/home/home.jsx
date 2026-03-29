@@ -1,19 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {useAtom} from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 
-import {getHomeVideo} from './home.jotai';
+import {homeVideo, getHomeVideo} from './home.jotai';
 
 const Home = () => {
     const navigate = useNavigate();
-    const [homeVideo, setHomeVideo] = useAtom(getHomeVideo);
+    const video = useAtomValue(homeVideo);      // 只读状态
+    const setHomeVideo = useSetAtom(getHomeVideo); // 只写操作
 
     useEffect(() => {
-        setHomeVideo()
-    }, [])
+        setHomeVideo({ page: 1, size: 12 });
+    }, [setHomeVideo]);
 
     const renderHomeVideo = () => {
-        return homeVideo.map((item, key) => {
+        return video.map((item, key) => {
             return <div key={key}
                         class="relative group bg-[#1c1c1c] rounded overflow-hidden shadow hover:shadow-lg transition">
                 <img src={item.cover || 'https://cdn.myanimelist.net/images/anime/5/87048.jpg'} alt="Attack on Titan"
