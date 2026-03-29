@@ -42,7 +42,17 @@ function GroupForm() {
 
   function handleSubmit() {
     formRef.current.validate().then((values) => {
-      submit(values);
+      const submitData = {
+        video_name: values.video_name || null,
+        link: values.link || null,
+        year: values.year || null,
+        cover: values.cover || null,
+        tags: values.tags || null,
+        categories: values.categories || null,
+        comment: values.comment || null,
+        stars: values.stars || 1, // 星级默认1
+      };
+      submit(submitData);
     });
   }
 

@@ -13,7 +13,7 @@ from apis.app.core.router import router
 from apis.app.core.deps import create_db_and_tables, drop_db
 
 # 创建数据库表
-# drop_db()
+drop_db()
 create_db_and_tables()
 
 
