@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Typography,
   Card,
@@ -13,6 +13,7 @@ import {
 } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import axios from 'axios';
+import qs from 'query-string';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
@@ -20,20 +21,17 @@ import './mock';
 
 function GroupForm() {
   const t = useLocale(locale);
-  const formRef = useRef<FormInstance>();
+  const formRef = useRef<FormInstance>(null);
   const [loading, setLoading] = useState(false);
   
-  // v5 获取状态数据
   const location = useLocation();
-  const initialValues = location.state || {};
-  console.log('initialValues: ',initialValues)
+  const { id } = qs.parse(location.search);
+  console.log(id);
 
   function submit(data) {
     setLoading(true);
-    axios
-      .put(`/api/video/${location.state.id}`, {
-        data,
-      })
+    const quest = id ? axios.put(`/api/video/${id}`, data) : axios.post(`/api/video`, data)
+    quest
       .then(() => {
         Message.success(t['groupForm.submitSuccess']);
       })
@@ -49,12 +47,31 @@ function GroupForm() {
   }
 
   function handleReset() {
-    formRef.current.resetFields();
+    if(id){
+      getVideo();
+    }else{
+      formRef.current.resetFields();
+    }
   }
+
+  const getVideo = () =>{
+    if(id){
+      axios.get(`/api/video/${id}`).then((res)=>{
+        if(res.status == 200 && res.data && formRef.current){
+          const data = res.data;
+          formRef.current.setFieldsValue(data);
+        }
+      })
+    }
+  }
+
+  useEffect(() => {
+    getVideo();
+  }, [id]);
 
   return (
     <div className={styles.container}>
-      <Form layout="vertical" ref={formRef} className={styles['form-group']} initialValues={initialValues}>
+      <Form layout="vertical" ref={formRef} className={styles['form-group']}>
         <Card>
           <Typography.Title heading={6}>
             {t['groupForm.title.video.info']}

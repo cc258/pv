@@ -66,6 +66,7 @@ async def del_video(*, session: sessionDEP, video_id: uuid.UUID):
 # 更新 Video
 @router.put("/{video_id}", response_model=VideoPublic)
 async def put_video(*, session: sessionDEP, video_id: uuid.UUID, video_in: VideoUpdate):
+    print("前端传的数据：", video_id, video_in.model_dump())
     video = session.get(Video, video_id)
     if not video:
         raise HTTPException(status_code=404, detail="Video not found")

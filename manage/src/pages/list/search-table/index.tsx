@@ -7,6 +7,7 @@ import {
   Button,
   Space,
   Typography,
+  Message,
 } from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
 import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
@@ -27,12 +28,23 @@ function SearchTable() {
   const history = useHistory()
   const t = useLocale(locale);
 
-  const view = useCallback(async (record, type) => {
-    console.log(record, type);
-    history.push(`/list/video-details/${record.id}`, {...record} );
-  }, [history]);
 
-  const columns = useMemo(() => getColumns(t, view), [t]);
+  const actionType = async(r ,type)=>{
+    if(type == 'view'){
+      history.push(`/list/video-details?id=${r.id}`);
+    }else if(type == 'del'){
+      axios.delete(`/api/video/${r.id}`).then((res)=>{
+        if(res.status == 200){
+          fetchData();
+          Message.success(t['searchTable.columns.operations.delete.success']);
+        }else{
+          Message.error(t['searchTable.columns.operations.delete.failed']);
+        }
+      })
+    }
+  }
+
+  const columns = useMemo(() => getColumns(t, actionType), [t]);
 
   const [data, setData] = useState([]);
   const [pagination, setPatination] = useState<PaginationProps>({
@@ -96,7 +108,7 @@ function SearchTable() {
       >
         <div className={styles['button-group']}>
           <Space>
-            <Button type="primary" icon={<IconPlus />}>
+            <Button onClick={()=>{history.push(`/list/video-details`);}} type="primary" icon={<IconPlus />}>
               {t['searchTable.operations.add']}
             </Button>
             <Button>{t['searchTable.operations.upload']}</Button>

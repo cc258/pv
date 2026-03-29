@@ -12,6 +12,7 @@ import rootReducer from './store';
 import PageLayout from './layout';
 import { GlobalContext } from './context';
 import Login from './pages/login';
+import VideoDetails from './pages/list/video-details';
 import checkLogin from './utils/checkLogin';
 import changeTheme from './utils/changeTheme';
 import useStorage from './utils/useStorage';

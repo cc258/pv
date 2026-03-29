@@ -20,13 +20,13 @@ const ContentIcon = [
 
 export function getColumns(
   t: any,
-  callback: (record: Record<string, any>, type: string) => Promise<void>
+  callback: (record: Record<string, any>, type: string) => Promise<void>,
 ) {
   return [
     {
       title: '',
       dataIndex: 'index',
-      render: (_,__,index:number) => <Text>{index+1}</Text>,
+      render: (_, __, index: number) => <Text>{index + 1}</Text>,
       headerCellStyle: { width: '20px', textAlign: 'center' },
       // render: (value) => <Text copyable>{value}</Text>,
     },
@@ -50,19 +50,26 @@ export function getColumns(
       title: t['searchTable.columns.categories'],
       dataIndex: 'categories',
     },
-     
+
     {
       title: t['searchTable.columns.operations'],
       dataIndex: 'operations',
       headerCellStyle: { paddingLeft: '15px' },
       render: (_, record) => (
-        <Button
+        <><Button
           type="text"
           size="small"
-          onClick={() => callback(record, 'view')}
+          onClick={() => callback(record, 'del')}
         >
-          {t['searchTable.columns.operations.view']}
+          {t['searchTable.columns.operations.delete']}
         </Button>
+          <Button
+            type="text"
+            size="small"
+            onClick={() => callback(record, 'view')}
+          >
+            {t['searchTable.columns.operations.view']}
+          </Button></>
       ),
     },
   ];

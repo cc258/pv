@@ -1,19 +1,19 @@
 import uuid
 from datetime import datetime, timezone
-from pydantic import EmailStr
+from pydantic import EmailStr, ConfigDict
 from sqlalchemy import DateTime
 from sqlmodel import Field, SQLModel
+from typing import Optional
 
 class VideoBase(SQLModel):
-    video_name: str = Field(default=None, nullable=False)
-    link: str = Field(default=None)
-    year: int = Field(default=None)
-    cover: str = Field(default=None)
-
-    tags: str = Field(default=None)
-    categories: str = Field(default=None, description="分类")
-    stars: int = Field(default=1, gt=0, le=5, description="评分（1-5分）")
-    comment: str = Field(default=None)
+    video_name: str
+    link: Optional[str] = None
+    year: Optional[int] = None
+    cover: Optional[str] = None
+    tags: Optional[str] = None
+    categories: Optional[str] = None
+    comment: Optional[str] = None
+    stars: int = 1
 
     class Config:
         extra = "allow"
