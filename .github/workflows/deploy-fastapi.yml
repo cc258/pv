@@ -26,22 +26,15 @@ jobs:
           source: "backend/"
           target: "/root/www/web/pv"
 
-      - name: Restart service
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.TX_HOST }}
-          username: ${{ secrets.TX_USER }}
-          key: ${{ secrets.TX_KEY }}
-          script: |
+      - name: Run remote command
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.TX_KEY }}
+          REMOTE_HOST: ${{ secrets.TX_HOST }}
+          REMOTE_USER: ${{ secrets.TX_USER }}
+          COMMAND: |
             cd /root/www/web/pv/backend
-      
-            # 确保 uv 在 PATH 中
-            export PATH="$HOME/.cargo/bin:$PATH"
-            
-            # uv 会自动创建 .venv、安装依赖、管理环境
             uv venv
             uv pip sync requirements.txt
-            
-            # 重启服务
             pm2 restart fastapi || pm2 start .venv/bin/uvicorn --name fastapi -- main:app --host 0.0.0.0 --port 8887
             pm2 save
