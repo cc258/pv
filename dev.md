@@ -3,6 +3,7 @@
 ### Step1 初始化
 
 ```shell
+cd backend
 
 uv init .
 
@@ -114,6 +115,11 @@ pnpm dev || pnpm start
 加入Tailwindcss
 
 比较简单好用。
+
+
+# 发布和启动 Caddy
+
+sudo systemctl reload caddy
 
 
 

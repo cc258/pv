@@ -9,8 +9,12 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS:str = "*"
     APIKEY:str = ""
 
+    TMDB_TOKEN:str = ""
+    TMDB_KEY:str = ""
+    TMDB_BASE:str = ""
+
     class Config:
-        env_file = "apis/.env"
+        env_file = "backend/.env"
         env_file_encoding = "utf-8"
         case_sensitive = False
 
