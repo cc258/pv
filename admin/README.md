@@ -6,7 +6,7 @@
 // 初始化项目
 pnpm install
 
-可能还需要装个day.js
+可能还需要装个day.js.
 
 // 开发模式
 pnpm start

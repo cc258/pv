@@ -1,5 +1,5 @@
 # pv
-preview video project~!!
+preview video project~!
 
 
 # e2e 测试
