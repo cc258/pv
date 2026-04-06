@@ -1,0 +1,37 @@
+name: Deploy FastAPI
+
+on:
+  push:
+    paths: ['backend/**']
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.TX_HOST }}
+          username: ${{ secrets.TX_USER }}
+          key: ${{ secrets.TX_KEY }}
+          source: "backend/"
+          target: "/root/www/web/pv/backend"
+
+      - name: Restart service
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.TX_HOST }}
+          username: ${{ secrets.TX_USER }}
+          key: ${{ secrets.TX_KEY }}
+          script: |
+            cd /root/www/web/pv/backend
+            pip install -r requirements.txt
+            # 先临时发布
+            uvicorn main:app --host 0.0.0.0 --port 8887" --name fastapi

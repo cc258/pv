@@ -1,0 +1,58 @@
+name: Deploy Admin
+
+on:
+  push:
+    paths: ['admin/**']
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+
+      - name: Get pnpm store
+        id: pnpm-cache
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('admin/pnpm-lock.yaml') }}
+
+      - name: Install & Build
+        working-directory: admin
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL: ${{ secrets.TX_PV_BE_URL }}/apis/v1 }}  # 生产后端地址
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+
+      - name: Upload to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.TX_HOST }}
+          username: ${{ secrets.TX_USER }}
+          key: ${{ secrets.TX_KEY }}
+          source: "admin/dist/"
+          target: "/root/www/web/pv/admin"
+          strip_components: 1
