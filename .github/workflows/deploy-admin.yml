@@ -2,8 +2,10 @@ name: Deploy Admin
 
 on:
   push:
-    paths: ['admin/**']
-    branches: [main]
+    paths:
+      - 'admin/**'
+    branches:
+      - main
 
 jobs:
   deploy:
