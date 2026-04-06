@@ -33,4 +33,4 @@ jobs:
           username: ${{ secrets.TX_USER }}
           key: ${{ secrets.TX_KEY }}
           source: "web/dist/"
-          target: "/root/www/web/pv/web"
+          target: "/root/www/web/pv"
