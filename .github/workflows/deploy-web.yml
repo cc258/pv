@@ -2,8 +2,16 @@ name: Deploy Web
 
 on:
   push:
-    paths: ['web/**']
-    branches: [main]
+    paths:
+      - 'web/**'
+    branches:
+      - main
+
+# 如果要用 GitHub Pages，需要这个权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
@@ -25,11 +33,7 @@ jobs:
           npm ci
           npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: web/dist
-
+      # 方案1：只部署到自己的服务器（推荐）
       - name: Upload to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -38,4 +42,3 @@ jobs:
           key: ${{ secrets.TX_KEY }}
           source: "web/dist/"
           target: "/root/www/web/pv/web"
-          strip_components: 1
