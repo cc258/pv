@@ -9,7 +9,7 @@ pnpm install
 可能还需要装个day.js
 
 // 开发模式
-npm run dev
+pnpm start
 
 // 构建
-npm run build
+pnpm run build
