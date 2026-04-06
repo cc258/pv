@@ -26,15 +26,20 @@ jobs:
           source: "backend/"
           target: "/root/www/web/pv"
 
-      - name: Run remote command
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.TX_KEY }}
-          REMOTE_HOST: ${{ secrets.TX_HOST }}
-          REMOTE_USER: ${{ secrets.TX_USER }}
-          COMMAND: |
-            cd /root/www/web/pv/backend
-            uv venv
-            uv pip sync requirements.txt
-            pm2 restart fastapi || pm2 start .venv/bin/uvicorn --name fastapi -- main:app --host 0.0.0.0 --port 8887
-            pm2 save
+      - name: Restart service
+  uses: appleboy/ssh-action@v1.2.0
+  with:
+    host: ${{ secrets.TX_HOST }}
+    username: ${{ secrets.TX_USER }}
+    key: ${{ secrets.TX_KEY }}
+    script: |
+      cd /root/www/web/pv/backend
+      
+      # 使用完整路径
+      /root/.local/bin/uv venv
+      /root/.local/bin/uv pip sync requirements.txt
+      
+      /root/.nvm/versions/node/v22.22.0/bin/pm2 restart fastapi || \
+      /root/.nvm/versions/node/v22.22.0/bin/pm2 start /root/.cargo/bin/uv --name fastapi -- run uvicorn main:app --host 0.0.0.0 --port 8887
+      
+      /root/.nvm/versions/node/v22.22.0/bin/pm2 save
