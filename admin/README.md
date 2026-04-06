@@ -11,5 +11,5 @@ pnpm install
 // 开发模式
 pnpm start
 
-// 构建
+// 构建1
 pnpm run build

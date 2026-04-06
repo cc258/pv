@@ -48,4 +48,3 @@ jobs:
           key: ${{ secrets.TX_KEY }}
           source: "admin/dist/"
           target: "/root/www/web/pv/admin"
-          strip_components: 1
