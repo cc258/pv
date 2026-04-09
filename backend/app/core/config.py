@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     PROJECT_NAME:str = "PV"
-    DATABASE:str = ""
+    DATABASE:str = "sqlite:///./database.db"
     API_V1:str = "/api/v1"
     DEBUG:bool = True
     JWT:str = ""
