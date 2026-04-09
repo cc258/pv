@@ -10,6 +10,6 @@ services:
     environment:
       - PYTHONPATH=/app
       - DATABASE_URL=sqlite:///./data/app.db
-      - API_PREFIX=/apis/v1  # 添加这一行
+      - API_PREFIX=/api  # 添加这一行
     volumes:
       - ./data:/app/data
