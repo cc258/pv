@@ -1,9 +1,7 @@
-name: Deploy FastAPI
+name: Deploy FastAPI to Server
 
 on:
   push:
-    paths:
-      - 'backend/**'
     branches:
       - main
 
@@ -11,35 +9,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-
       - name: Deploy to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.TX_HOST }}
-          username: ${{ secrets.TX_USER }}
-          key: ${{ secrets.TX_KEY }}
-          source: "backend/"
-          target: "/root/www/web/pv"
-
-      - name: Restart service
-        uses: appleboy/ssh-action@v1.2.0
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.TX_HOST }}
           username: ${{ secrets.TX_USER }}
           key: ${{ secrets.TX_KEY }}
           script: |
-            cd /root/www/web/pv/backend
-            
-            # 使用完整路径
-            /root/.local/bin/uv venv
-            /root/.local/bin/uv sync --no-dev   # 只安装生产依赖
-            
-            /root/.nvm/versions/node/v22.22.0/bin/pm2 restart fastapi || \
-            /root/.nvm/versions/node/v22.22.0/bin/pm2 start /root/.local/bin/uv --name fastapi -- run uvicorn main:app --host 0.0.0.0 --port 8887
-            
-            /root/.nvm/versions/node/v22.22.0/bin/pm2 save
+            cd ~/www/github/pv
+            git pull
+            docker-compose down
+            docker-compose up -d --build
