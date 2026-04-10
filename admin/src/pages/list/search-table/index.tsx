@@ -11,13 +11,14 @@ import {
 } from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
 import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
-import axios from 'axios';
+import request from '@/utils/request';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
 import styles from './style/index.module.less';
 import './mock';
 import { getColumns } from './constants';
+
 
 const { Title } = Typography;
 export const ContentType = ['图文', '横版短视频', '竖版短视频'];
@@ -33,8 +34,8 @@ function SearchTable() {
     if(type == 'view'){
       history.push(`/list/video-details?id=${r.id}`);
     }else if(type == 'del'){
-      axios.delete(`/api/video/${r.id}`).then((res)=>{
-        if(res.status == 200){
+      request.delete(`/video/${r.id}`).then((res)=>{
+        if(res){
           fetchData();
           Message.success(t['searchTable.columns.operations.delete.success']);
         }else{
@@ -64,8 +65,8 @@ function SearchTable() {
   function fetchData() {
     const { current, pageSize } = pagination;
     setLoading(true);
-    axios
-      .get('/api/video', {
+    request
+      .get('/video', {
         params: {
           page: current,
           size: pageSize,
@@ -73,7 +74,7 @@ function SearchTable() {
         },
       })
       .then((res) => {
-        setData(res.data.data);
+        setData(res.data);
         setPatination({
           ...pagination,
           current,

@@ -12,7 +12,7 @@ import {
   Message,
 } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
-import axios from 'axios';
+import request from '@/utils/request';
 import qs from 'query-string';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -30,7 +30,7 @@ function GroupForm() {
 
   function submit(data) {
     setLoading(true);
-    const quest = id ? axios.put(`/api/video/${id}`, data) : axios.post(`/api/video`, data)
+    const quest = id ? request.put(`/video/${id}`, data) : request.post(`/video`, data)
     quest
       .then(() => {
         Message.success(t['groupForm.submitSuccess']);
@@ -66,9 +66,9 @@ function GroupForm() {
 
   const getVideo = () =>{
     if(id){
-      axios.get(`/api/video/${id}`).then((res)=>{
-        if(res.status == 200 && res.data && formRef.current){
-          const data = res.data;
+      request.get(`/video/${id}`).then((res)=>{
+        if(res && formRef.current){
+          const data = res;
           formRef.current.setFieldsValue(data);
         }
       })
