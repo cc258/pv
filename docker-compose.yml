@@ -9,7 +9,6 @@ services:
       - "8887:8887"
     environment:
       - PYTHONPATH=/app
-      - DATABASE_URL=sqlite:///./data/app.db
-      - API_PREFIX=/api  # 添加这一行
+      - DATABASE_URL=sqlite:///./database.db
     volumes:
-      - ./data:/app/data
+      - ./backend/app/database.db:/app/database.db
