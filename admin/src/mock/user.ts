@@ -3,14 +3,16 @@ import { isSSR } from '@/utils/is';
 import setupMock from '@/utils/setupMock';
 import { generatePermission } from '@/routes';
 
-if (!isSSR) {
+// if (!isSSR) {
+// Allow login
+if (true) {
   Mock.XHR.prototype.withCredentials = true;
 
   setupMock({
     setup: () => {
       // 用户信息
       const userRole = window.localStorage.getItem('userRole') || 'admin';
-      Mock.mock(new RegExp('/api/user/userInfo'), () => {
+      Mock.mock(new RegExp('/userInfo'), () => {
         return Mock.mock({
           name: 'admin',
           avatar:
@@ -33,7 +35,7 @@ if (!isSSR) {
       });
 
       // 登录
-      Mock.mock(new RegExp('/api/user/login'), (params) => {
+      Mock.mock(new RegExp('/login'), (params) => {
         const { userName, password } = JSON.parse(params.body);
         if (!userName) {
           return {
