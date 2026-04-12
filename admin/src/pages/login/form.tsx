@@ -9,7 +9,7 @@ import {
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import { IconLock, IconUser } from '@arco-design/web-react/icon';
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+import request from '@/utils/request';
 import useStorage from '@/utils/useStorage';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -42,10 +42,10 @@ export default function LoginForm() {
   function login(params) {
     setErrorMessage('');
     setLoading(true);
-    axios
-      .post('/api/user/login', params)
+    request
+      .post('/login', params)
       .then((res) => {
-        const { status, msg } = res.data;
+        const { status, msg } = res;
         if (status === 'ok') {
           afterLoginSuccess(params);
         } else {
