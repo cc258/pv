@@ -9,6 +9,7 @@ export function isString(val): boolean {
 }
 
 export const isSSR = (function () {
+  return false;
   try {
     return !(typeof window !== 'undefined' && document !== undefined);
   } catch (e) {

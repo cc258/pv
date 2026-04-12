@@ -3,9 +3,7 @@ import { isSSR } from '@/utils/is';
 import setupMock from '@/utils/setupMock';
 import { generatePermission } from '@/routes';
 
-// if (!isSSR) {
-// Allow login
-if (true) {
+if (!isSSR) {
   Mock.XHR.prototype.withCredentials = true;
 
   setupMock({
