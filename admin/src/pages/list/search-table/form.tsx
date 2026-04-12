@@ -49,75 +49,21 @@ function SearchForm(props: {
       >
         <Row gutter={24}>
           <Col span={colSpan}>
-            <Form.Item label={t['searchTable.columns.id']} field="id">
-              <Input placeholder={t['searchForm.id.placeholder']} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
             <Form.Item label={t['searchTable.columns.name']} field="name">
-              <Input
-                allowClear
-                placeholder={t['searchForm.name.placeholder']}
-              />
+              <Input allowClear />
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item
-              label={t['searchTable.columns.contentType']}
-              field="contentType"
-            >
-              <Select
-                placeholder={t['searchForm.all.placeholder']}
-                options={ContentType.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
-                allowClear
-              />
+            <Form.Item label={t['searchTable.columns.tags']} field="tags">
+              <Input allowClear />
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item
-              label={t['searchTable.columns.filterType']}
-              field="filterType"
-            >
-              <Select
-                placeholder={t['searchForm.all.placeholder']}
-                options={FilterType.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
-                allowClear
-              />
+            <Form.Item label={t['searchTable.columns.categories']} field="categories">
+              <Input allowClear />
             </Form.Item>
           </Col>
-          <Col span={colSpan}>
-            <Form.Item
-              label={t['searchTable.columns.createdTime']}
-              field="createdTime"
-            >
-              <DatePicker.RangePicker
-                allowClear
-                style={{ width: '100%' }}
-                disabledDate={(date) => dayjs(date).isAfter(dayjs())}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item label={t['searchTable.columns.status']} field="status">
-              <Select
-                placeholder={t['searchForm.all.placeholder']}
-                options={Status.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
-                allowClear
-              />
-            </Form.Item>
-          </Col>
+
         </Row>
       </Form>
       <div className={styles['right-button']}>
