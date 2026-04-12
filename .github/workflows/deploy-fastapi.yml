@@ -2,6 +2,8 @@ name: Deploy FastAPI to Server
 
 on:
   push:
+    paths:
+      - 'backend/**'
     branches:
       - main
 
