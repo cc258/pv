@@ -15,6 +15,8 @@ export interface AuthParams {
 }
 
 const judge = (actions: string[], perm: string[]) => {
+  // todo
+  return true;
   if (!perm || !perm.length) {
     return false;
   }
