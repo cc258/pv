@@ -40,7 +40,7 @@ const auth = (params: Auth, userPermission: UserPermission) => {
     });
   }
 
-  const perm = userPermission[resource];
+  const perm = userPermission[resource] || [];
   return judge(actions, perm);
 };
 
