@@ -39,8 +39,6 @@ const auth = (params, userPermission) => {
 };
 
 export default (params, userPermission = {}) => {
-  // permission pass
-  return true;
   const { requiredPermissions, oneOfPerm } = params;
   if (Array.isArray(requiredPermissions) && requiredPermissions.length) {
     let count = 0;
