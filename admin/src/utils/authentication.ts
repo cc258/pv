@@ -15,8 +15,6 @@ export interface AuthParams {
 }
 
 const judge = (actions: string[], perm: string[]) => {
-  // todo
-  return true;
   if (!perm || !perm.length) {
     return false;
   }
@@ -37,7 +35,7 @@ const auth = (params: Auth, userPermission: UserPermission) => {
       return false;
     }
     return matchPermissions.every((key) => {
-      const perm = userPermission[key];
+      const perm = userPermission[key] || [];
       return judge(actions, perm);
     });
   }
