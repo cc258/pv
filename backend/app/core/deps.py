@@ -7,7 +7,6 @@ from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 
 from backend.app.core.config import settings
-from backend.app.models.models import TokenPayload
 
 
 sqlite_file_name = "apis/database.db"

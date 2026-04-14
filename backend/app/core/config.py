@@ -9,9 +9,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS:str = "*"
     APIKEY:str = ""
 
-    TMDB_TOKEN:str = ""
-    TMDB_KEY:str = ""
-    TMDB_BASE:str = ""
+    DUMMY_HASH:str = ""
 
     class Config:
         env_file = "backend/.env"

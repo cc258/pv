@@ -1,54 +1,12 @@
 import uuid
-import httpx
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlmodel import Session, select
 
 from backend.app.core.config import settings
 from backend.app.core.deps import sessionDEP
-from backend.app.models.models import Message
 from backend.app.models.videos import Video, VideoPublic, VideoCreate, VideoUpdate
 
 router = APIRouter(prefix="/video", tags=["video"])
-
-# 构建请求头
-headers = {
-    "accept": "application/json",
-    "Authorization": f"Bearer {settings.TMDB_TOKEN}"
-}
-
-
-# 第三方数据
-@router.get("/popular")
-async def get_video_popular():
-    """获取热门电影"""
-    # 不能使用，需要VPN
-    try:
-        # httpx 的异步客户端
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(
-                f"{settings.TMDB_BASE}/movie/popular",
-                params={
-                    "api_key": settings.TMDB_KEY,
-                    "language": "zh-CN"
-                },
-                timeout=30.0
-            )
-
-            if resp.status_code != 200:
-                raise HTTPException(
-                    status_code=resp.status_code,
-                    detail=f"TMDB API error: {resp.text}"
-                )
-
-            data = resp.json()
-            return data.get("results", [])[:10]
-
-    except httpx.TimeoutException:
-        raise HTTPException(status_code=504, detail="TMDB API timeout")
-    except Exception as e:
-        print(f"Error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
 
 # 获取 Video列表
 @router.get("")
@@ -96,7 +54,7 @@ async def post_video(*, session: sessionDEP, video_in: VideoCreate):
 
 
 # 删除 Video
-@router.delete("/{video_id}", response_model=Message)
+@router.delete("/{video_id}")
 async def del_video(*, session: sessionDEP, video_id: uuid.UUID):
     video = session.get(Video, video_id)
     if not video:
@@ -104,7 +62,7 @@ async def del_video(*, session: sessionDEP, video_id: uuid.UUID):
 
     session.delete(video)
     session.commit()
-    return Message(message="Item deleted successfully")
+    return "Item deleted successfully"
 
 
 # 更新 Video

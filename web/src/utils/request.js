@@ -30,9 +30,7 @@ request.interceptors.response.use(
     if (error.response?.status === 401) {
       // 未授权，清除 token 并跳转登录
       localStorage.removeItem('token')
-      window.location.href = '/login'
     }
-    console.error('API Error:', error)
     return Promise.reject(error)
   }
 )

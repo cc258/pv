@@ -25,14 +25,11 @@ request.interceptors.request.use(
 
 // 响应拦截器
 request.interceptors.response.use(
-  response => response.data,  // 直接返回 data
+  response => response.data,
   error => {
     if (error.response?.status === 401) {
-      // 未授权，清除 token 并跳转登录
       localStorage.removeItem('token')
-      window.location.href = '/login'
     }
-    console.error('API Error:', error)
     return Promise.reject(error)
   }
 )

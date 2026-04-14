@@ -52,6 +52,10 @@ export default function LoginForm() {
           setErrorMessage(msg || t['login.form.login.errMsg']);
         }
       })
+      .catch((error) => {
+            const errorMessage = error.response?.data?.detail;
+            setErrorMessage(errorMessage || t['login.form.login.errMsg']);
+      })
       .finally(() => {
         setLoading(false);
       });
@@ -84,10 +88,10 @@ export default function LoginForm() {
         className={styles['login-form']}
         layout="vertical"
         ref={formRef}
-        initialValues={{ userName: 'admin', password: 'admin' }}
+        initialValues={{ username: 'admin', password: 'admin' }}
       >
         <Form.Item
-          field="userName"
+          field="username"
           rules={[{ required: true, message: t['login.form.userName.errMsg'] }]}
         >
           <Input
