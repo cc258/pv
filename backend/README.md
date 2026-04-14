@@ -1,5 +1,5 @@
 # pv
-preview video project~! deploy 1
+preview video project~! deploy 2
 
 
 # e2e 测试
