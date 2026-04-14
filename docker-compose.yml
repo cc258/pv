@@ -11,4 +11,5 @@ services:
       - PYTHONPATH=/app
       - DATABASE_URL=sqlite:///./database.db
     volumes:
+      - ./backend:/app/backend
       - ./backend/app/database.db:/app/database.db
