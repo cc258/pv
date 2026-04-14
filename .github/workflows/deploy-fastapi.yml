@@ -20,5 +20,5 @@ jobs:
           script: |
             cd ~/www/github/pv
             git pull
-            docker-compose down
+            docker-compose down -v --rmi all
             docker-compose up -d --build
