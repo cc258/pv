@@ -19,6 +19,13 @@ jobs:
           key: ${{ secrets.TX_KEY }}
           script: |
             cd ~/www/github/pv
-            git pull
+            # 放弃所有本地修改、删除所有新增文件
+            git clean -fd
+            git checkout -- .
+            
+            # 强制重置为远程最新代码（完全覆盖）
+            git fetch origin
+            git reset --hard origin/main
+            
             docker-compose down -v --rmi all
             docker-compose up -d --build
