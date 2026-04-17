@@ -55,10 +55,6 @@ cover/
 *.mo
 *.pot
 
-# Database
-*.db
-database.db
-
 # Django stuff:
 *.log
 local_settings.py
