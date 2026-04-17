@@ -76,6 +76,10 @@ class Role(SQLModel, table=True):
     name: str = Field(unique=True)
     description: str = Field(default="")
 
+    users: List["User"] = Relationship(
+        back_populates="roles",
+        link_model=UserRole
+    )
     permissions: List["Permission"] = Relationship(
         back_populates="roles",
         link_model=RolePermission
@@ -84,7 +88,7 @@ class Role(SQLModel, table=True):
 
 class User(UserBase, table=True):
     id: int = Field(default=None, primary_key=True)
-    hashed_password: str = Field(nullable=False)  # 存储哈希
+    hashed_password: str = Field(nullable=False)
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
