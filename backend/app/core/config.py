@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     DATABASE:str = "sqlite:///./database.db"
     API_V1:str = "/apis/v1"
     DEBUG:bool = True
-    JWT:str = ""
+    SECRET_KEY:str = ""
     ALLOWED_ORIGINS:str = "*"
     APIKEY:str = ""
 
