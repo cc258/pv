@@ -22,7 +22,7 @@ def login(session: sessionDEP, form_data: LoginRequest,) -> Token:
 
     if not user:
         raise HTTPException(status_code=401, detail="Incorrect email or password")
-    elif not user.is_active:
+    elif not user.status == 1:
         raise HTTPException(status_code=401, detail="Inactive user")
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return Token(
