@@ -13,4 +13,4 @@ services:
       - PYTHONPATH=/app
     volumes:
       - ./backend:/app/backend
-      - ./backend/database.db:/app/backend/database.db
+      - ./database.db:/app/database.db

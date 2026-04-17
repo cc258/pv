@@ -11,9 +11,16 @@ from app.core.config import settings
 from app.core.security import ALGORITHM
 from app.models.user import User
 
-# 获取 app 目录的绝对路径
+# 本地开发：backend/app/database.db
+# Docker容器内：/app/database.db (因为 ./database.db 挂载到 /app/database.db)
 app_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 db_path = os.path.join(app_dir, "database.db")
+
+# Docker容器内路径
+docker_db_path = "/app/database.db"
+if os.path.exists(docker_db_path):
+    db_path = docker_db_path
+
 sqlite_url = f"sqlite:///{db_path}"
 
 engine = create_engine(sqlite_url, echo=True)

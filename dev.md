@@ -19,6 +19,10 @@ uv add "fastapi[all]" langchain langchain-openai python-dotenv sqlmodel alembic 
 如果要升级当前的依赖
 uv sync --upgrade
 
+初始化数据
+cd backend
+uv run python init_db.py
+
 ```
 
 ### Step2 建立目录
