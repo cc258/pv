@@ -7,19 +7,14 @@ from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 
-from app.core.config import settings
-from app.core.security import ALGORITHM
-from app.models.user import User
+from backend.app.core.config import settings
+from backend.app.core.security import ALGORITHM
+from backend.app.models.user import User
 
-# 本地开发：backend/app/database.db
-# Docker容器内：/app/database.db (因为 ./database.db 挂载到 /app/database.db)
+# 本地开发：backend/app/database.db（相对于项目根目录）
+# Docker容器内：/app/backend/app/database.db
 app_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 db_path = os.path.join(app_dir, "database.db")
-
-# Docker容器内路径
-docker_db_path = "/app/database.db"
-if os.path.exists(docker_db_path):
-    db_path = docker_db_path
 
 sqlite_url = f"sqlite:///{db_path}"
 

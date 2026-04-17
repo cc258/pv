@@ -2,9 +2,9 @@ import uuid
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlmodel import Session, select
 
-from app.core.config import settings
-from app.core.deps import sessionDEP
-from app.models.videos import Video, VideoPublic, VideoCreate, VideoUpdate
+from backend.app.core.config import settings
+from backend.app.core.deps import sessionDEP
+from backend.app.models.videos import Video, VideoPublic, VideoCreate, VideoUpdate
 
 router = APIRouter(prefix="/video", tags=["video"])
 

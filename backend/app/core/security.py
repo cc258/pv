@@ -5,7 +5,7 @@ from jwt.exceptions import InvalidTokenError
 from fastapi.security import OAuth2PasswordBearer
 from pwdlib import PasswordHash
 from pwdlib.hashers.bcrypt import BcryptHasher
-from app.core.config import settings
+from backend.app.core.config import settings
 
 password_hash = PasswordHash((BcryptHasher(),))
 

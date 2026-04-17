@@ -1,8 +1,8 @@
 from fastapi import Depends, APIRouter, HTTPException
 from typing import Dict, List
 
-from app.core.deps import sessionDEP, get_current_user
-from app.models.user import User
+from backend.app.core.deps import sessionDEP, get_current_user
+from backend.app.models.user import User
 
 router = APIRouter(prefix="/userInfo", tags=["user"])
 

@@ -11,9 +11,9 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from sqlmodel import Session
-from app.core.deps import engine, create_db_and_tables
-from app.models.user import User, Role, Permission, UserRole, RolePermission
-from app.core.security import get_password_hash
+from backend.app.core.deps import engine, create_db_and_tables
+from backend.app.models.user import User, Role, Permission, UserRole, RolePermission
+from backend.app.core.security import get_password_hash
 from datetime import datetime, UTC
 
 def init_database():
