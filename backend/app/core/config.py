@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     PROJECT_NAME:str = "PV"
-    DATABASE:str = "sqlite:///./database.db"
+    DATABASE:str = "sqlite:///./backend/app/database.db"
     API_V1:str = "/apis/v1"
     DEBUG:bool = True
     SECRET_KEY:str = ""
