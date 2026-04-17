@@ -5,13 +5,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 # 环境
-from backend.app.core.config import settings
+from app.core.config import settings
 
 # 路由
-from backend.app.core.router import router
+from app.core.router import router
 
 # 数据库
-from backend.app.core.deps import create_db_and_tables, drop_db
+from app.core.deps import create_db_and_tables, drop_db
 
 # 创建数据库表
 # drop_db()

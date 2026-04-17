@@ -5,11 +5,11 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session, select
 from typing import Annotated, List
 
-from backend.app.core.deps import sessionDEP
-from backend.app.models.login import LoginRequest, Token
-from backend.app.core.security import create_access_token
-from backend.app.core.config import settings
-from backend.app import crud
+from app.core.deps import sessionDEP
+from app.models.login import LoginRequest, Token
+from app.core.security import create_access_token
+from app.core.config import settings
+from app import crud
 
 
 router = APIRouter(prefix="/login", tags=["login"])

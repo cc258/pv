@@ -27,17 +27,13 @@ export default function LoginForm() {
   const [rememberPassword, setRememberPassword] = useState(!!loginParams);
 
   function afterLoginSuccess(params, token) {
-    // 记住密码
     if (rememberPassword) {
       setLoginParams(JSON.stringify(params));
     } else {
       removeLoginParams();
     }
-    // 存储 token
     localStorage.setItem('token', token);
-    // 记录登录状态
     localStorage.setItem('userStatus', 'login');
-    // 跳转首页
     window.location.href = '/';
   }
 

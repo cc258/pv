@@ -1,10 +1,10 @@
 
 from sqlmodel import Session, select
 
-from backend.app.core.security import get_password_hash, verify_password
-from backend.app.core.deps import sessionDEP
-from backend.app.core.config import settings
-from backend.app.models.user import User
+from app.core.security import get_password_hash, verify_password
+from app.core.deps import sessionDEP
+from app.core.config import settings
+from app.models.user import User
 
 
 def get_user_by_name(*, session: sessionDEP, username: str):
