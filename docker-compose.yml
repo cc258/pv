@@ -8,10 +8,9 @@ services:
     ports:
       - "8887:8887"
     env_file:
-      - ./backend/app/.env
+      - ./backend/.env
     environment:
       - PYTHONPATH=/app
-      - DATABASE_URL=sqlite:///./database.db
     volumes:
       - ./backend:/app/backend
       - ./backend/app/database.db:/app/database.db
