@@ -9,7 +9,6 @@ from pydantic import ValidationError
 from backend.app.core.config import settings
 
 
-sqlite_file_name = "apis/database.db"
 sqlite_url = settings.DATABASE
 
 engine = create_engine(sqlite_url, echo=True)

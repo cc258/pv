@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     DEBUG:bool = True
     SECRET_KEY:str = ""
     ALLOWED_ORIGINS:str = "*"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     APIKEY:str = ""
 
     DUMMY_HASH:str = ""
