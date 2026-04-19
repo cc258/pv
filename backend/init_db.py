@@ -8,7 +8,7 @@ import sys
 import os
 
 # 添加 backend 目录到 Python 路径
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from sqlmodel import Session
 from backend.app.core.deps import engine, create_db_and_tables
