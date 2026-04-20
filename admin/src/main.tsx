@@ -45,6 +45,11 @@ function Index() {
         type: 'update-userInfo',
         payload: { userInfo: res, userLoading: false },
       });
+    }).catch(() => {
+      store.dispatch({
+        type: 'update-userInfo',
+        payload: { userLoading: false },
+      });
     });
   }
 
