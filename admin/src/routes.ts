@@ -152,6 +152,13 @@ export const routes: IRoute[] = [
         name: 'menu.user.setting',
         key: 'user/setting',
       },
+      {
+        name: 'menu.user.permission',
+        key: 'user/permission',
+        requiredPermissions: [
+          { resource: 'menu.user.permission', actions: ['read'] },
+        ],
+      },
     ],
   },
 ];

@@ -7,7 +7,7 @@ class UserBase(SQLModel):
     username: str = Field(min_length=3, max_length=50)
     password: str = Field(default=None, nullable=False)
     gender: int = Field(default=0, description="0: 未知，1:男，2:女")
-    status: int = Field(default=0, description="0: 未启用，1:正常，2:禁止")
+    status: int = Field(default=1, description="0: 未启用，1:正常，2:禁止")
     email: EmailStr = Field(default=None, max_length=255)
 
 

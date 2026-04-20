@@ -11,3 +11,7 @@ class Token(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+class RegRequest(BaseModel):
+    username: str
+    password: str

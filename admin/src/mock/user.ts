@@ -10,7 +10,7 @@ if (!isSSR) {
     setup: () => {
       // 用户信息
       const userRole = window.localStorage.getItem('userRole') || 'admin';
-      Mock.mock(new RegExp('/userInfo'), () => {
+      Mock.mock(new RegExp('/user/info'), () => {
         return Mock.mock({
           name: 'admin',
           avatar:

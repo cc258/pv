@@ -12,6 +12,13 @@ def get_user_by_name(*, session: sessionDEP, username: str):
     db_user = session.exec(statement).first()
     return db_user
 
+# create
+def create_user(*, session: sessionDEP, username: str, password: str) -> User:
+    user = User(username=username, password=password)
+    session.add(user)
+    session.commit()
+    return user
+
 # * 必须使用关键字参数，可读，安全
 def authenticate(*, session: sessionDEP, username: str, password: str):
     db_user = get_user_by_name(session=session, username=username)

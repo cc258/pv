@@ -6,13 +6,25 @@ from sqlmodel import Session, select
 from typing import Annotated, List
 
 from backend.app.core.deps import sessionDEP
-from backend.app.models.login import LoginRequest, Token
-from backend.app.core.security import create_access_token
+from backend.app.models.login import LoginRequest, RegRequest, Token
+from backend.app.core.security import create_access_token, get_password_hash
 from backend.app.core.config import settings
 from backend.app import crud
-
+from backend.app.models.user import User, UserCreate
 
 router = APIRouter(prefix="/login", tags=["login"])
+
+
+@router.post("/reg")
+def register(session: sessionDEP, user_create: UserCreate,) -> User:
+    db_user = User.model_validate(
+        user_create, update={"hashed_password": get_password_hash(user_create.password)}
+    )
+    session.add(db_user)
+    session.commit()
+    session.refresh(db_user)
+    return db_user
+
 
 @router.post("")
 def login(session: sessionDEP, form_data: LoginRequest,) -> Token:

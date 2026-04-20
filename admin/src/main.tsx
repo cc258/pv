@@ -40,7 +40,7 @@ function Index() {
       type: 'update-userInfo',
       payload: { userLoading: true },
     });
-    request.get('/userInfo').then((res: any) => {
+    request.get('/user/info').then((res: any) => {
       store.dispatch({
         type: 'update-userInfo',
         payload: { userInfo: res, userLoading: false },

@@ -73,6 +73,10 @@ const i18n = {
     'userSetting.verified.operation.revoke': 'Revoke',
     'userSetting.verified.status.success': 'passed',
     'userSetting.verified.status.waiting': 'under review',
+
+    'menu.user.permission': 'Permission Management',
+    'permissionManagement.title': 'Role Permission Management',
+    'permissionManagement.description': 'Click the switch to adjust role permissions in real-time, changes take effect immediately',
   },
 
   'zh-CN': {
@@ -144,6 +148,10 @@ const i18n = {
     'userSetting.verified.operation.revoke': '撤回',
     'userSetting.verified.status.success': '已通过',
     'userSetting.verified.status.waiting': '审核中',
+
+    'menu.user.permission': '权限管理',
+    'permissionManagement.title': '角色权限管理',
+    'permissionManagement.description': '点击开关即可实时调整角色权限，修改立即生效',
   },
 };
 
