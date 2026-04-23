@@ -1,79 +1,107 @@
 import uuid
 from fastapi import APIRouter, Depends, Query, HTTPException
-from sqlmodel import Session, select
+from sqlmodel import Session, select, func, delete
 
-from backend.app.core.config import settings
-from backend.app.core.deps import sessionDEP
-from backend.app.models.videos import Video, VideoPublic, VideoCreate, VideoUpdate
+from backend.app.core.deps import get_db, get_current_user
+from backend.app.models.videos import Video, VideoCategory
+from backend.app.models.user import User
 
 router = APIRouter(prefix="/video", tags=["video"])
 
-# 获取 Video列表
+
 @router.get("")
 async def get_video_list(
-        session: sessionDEP,
+        category_id: int = Query(None, description="分类ID"),
         name: str = Query(None),
         tags: str = Query(None),
-        categories: str = Query(None),
         page: int = Query(default=1, ge=1, description="页码"),
-        size: int = Query(default=10, ge=0, description="每页显示数目")
+        size: int = Query(default=10, ge=0, description="每页显示数目"),
+        session: Session = Depends(get_db),
 ):
-    query = session.query(Video)
+    query = select(Video)
+    count_query = select(func.count(Video.id))
+
     if name:
-        query = query.filter(Video.video_name.like(f"%{name.strip()}%"))
+        query = query.where(Video.video_name.like(f"%{name.strip()}%"))
+        count_query = count_query.where(Video.video_name.like(f"%{name.strip()}%"))
     if tags and tags.strip():
-        query = query.filter(Video.tags.like(f"%{tags.strip()}%"))
-    if categories and categories.strip():
-        query = query.filter(Video.categories.like(f"%{categories.strip()}%"))
+        query = query.where(Video.tags.like(f"%{tags.strip()}%"))
+        count_query = count_query.where(Video.tags.like(f"%{tags.strip()}%"))
+    if category_id:
+        video_ids = session.exec(
+            select(VideoCategory.video_id).where(VideoCategory.category_id == category_id)
+        ).all()
+        query = query.where(Video.id.in_(video_ids))
+        count_query = count_query.where(Video.id.in_(video_ids))
 
-    total = query.count()
+    total = session.scalar(count_query)
+    videos = session.exec(query.offset((page - 1) * size).limit(size)).all()
 
-    video_list = query.offset((page - 1) * size).limit(size).all()
-
-    return {"data": video_list, "total": total, "page": page, "size": size}
+    return {"data": videos, "total": total, "page": page, "size": size}
 
 
-# 获取单个 Video
-@router.get("/{video_id}", response_model=VideoPublic)
-async def get_video(video_id: uuid.UUID, session: sessionDEP):
+@router.get("/{video_id}")
+async def get_video(
+    video_id: uuid.UUID,
+    session: Session = Depends(get_db),
+):
     video = session.get(Video, video_id)
     if not video:
         raise HTTPException(status_code=404, detail="video not found")
     return video
 
 
-# 创建 Video
-@router.post("", response_model=VideoPublic)
-async def post_video(*, session: sessionDEP, video_in: VideoCreate):
+@router.post("")
+async def post_video(
+    video_in: dict,
+    session: Session = Depends(get_db),
+):
+    category_ids = video_in.pop("category_ids", [])
     video = Video.model_validate(video_in)
     session.add(video)
     session.commit()
     session.refresh(video)
+
+    for cat_id in category_ids:
+        session.add(VideoCategory(video_id=video.id, category_id=cat_id))
+    session.commit()
+
     return video
 
 
-# 删除 Video
 @router.delete("/{video_id}")
-async def del_video(*, session: sessionDEP, video_id: uuid.UUID):
+async def del_video(
+    video_id: uuid.UUID,
+    session: Session = Depends(get_db),
+):
     video = session.get(Video, video_id)
     if not video:
         raise HTTPException(status_code=404, detail="Video not found")
-
+    session.exec(delete(VideoCategory).where(VideoCategory.video_id == video_id))
     session.delete(video)
     session.commit()
-    return "Item deleted successfully"
+    return {"message": "deleted"}
 
 
-# 更新 Video
-@router.put("/{video_id}", response_model=VideoPublic)
-async def put_video(*, session: sessionDEP, video_id: uuid.UUID, video_in: VideoUpdate):
-    print("前端传的数据：", video_id, video_in.model_dump())
+@router.put("/{video_id}")
+async def put_video(
+    video_id: uuid.UUID,
+    video_in: dict,
+    session: Session = Depends(get_db),
+):
     video = session.get(Video, video_id)
     if not video:
         raise HTTPException(status_code=404, detail="Video not found")
 
-    video_dict = video_in.model_dump(exclude_unset=True)
-    video.sqlmodel_update(video_dict)
+    category_ids = video_in.pop("category_ids", None)
+    video.sqlmodel_update(video_in)
+
+    if category_ids is not None:
+        session.exec(delete(VideoCategory).where(VideoCategory.video_id == video_id))
+        for cat_id in category_ids:
+            session.add(VideoCategory(video_id=video.id, category_id=cat_id))
+
     session.add(video)
     session.commit()
+    session.refresh(video)
     return video

@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from sqlmodel import Session
 from backend.app.core.deps import engine, create_db_and_tables
 from backend.app.models.user import User, Role, Permission, UserRole, RolePermission
+from backend.app.models.videos import Category
 from backend.app.core.security import get_password_hash
 from datetime import datetime, UTC
 
@@ -84,6 +85,38 @@ def init_database():
         session.add(admin_user)
         session.commit()
         
+        # 创建默认分类
+        categories = [
+            Category(name="Comedy", description=""),
+            Category(name="Romance", description=""),
+            Category(name="Horror", description=""),
+            Category(name="Action", description=""),
+            Category(name="Sci-Fi", description=""),
+            Category(name="Drama", description=""),
+            Category(name="Adventure", description=""),
+            Category(name="Animation", description=""),
+            Category(name="Crime", description=""),
+            Category(name="Documentary", description=""),
+            Category(name="Family", description=""),
+            Category(name="Fantasy", description=""),
+            Category(name="History", description=""),
+            Category(name="Music", description=""),
+            Category(name="Mystery", description=""),
+            Category(name="News", description=""),
+            Category(name="Reality", description=""),
+            Category(name="Sport", description=""),
+            Category(name="Talk Show", description=""),
+            Category(name="Thriller", description=""),
+            Category(name="War", description=""),
+            Category(name="Western", description=""),
+            Category(name="Biography", description=""),
+            Category(name="Musical", description=""),
+            Category(name="Superhero", description=""),
+            Category(name="Disaster", description=""),
+        ]
+        session.add_all(categories)
+        session.commit()
+
         # 为 admin 用户分配 admin 角色
         user_role_link = UserRole(
             user_id=admin_user.id,
@@ -94,6 +127,7 @@ def init_database():
         session.commit()
         print("数据库初始化完成！")
         print("默认管理员账号：admin / admin")
+        print("默认分类：喜剧、爱情、恐怖、动作、科幻、剧情")
 
 if __name__ == "__main__":
     init_database()

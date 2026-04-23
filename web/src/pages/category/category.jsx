@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai';
 
-import { homeVideo, getHomeVideo } from './home.jotai';
+import { categoryVideo, getCategoryVideo } from './category.jotai.js';
 import Categories from "../../components/categories/categories.jsx";
 
-const Home = () => {
+const Category = () => {
     const navigate = useNavigate();
-    const video = useAtomValue(homeVideo);      // 只读状态
-    const setHomeVideo = useSetAtom(getHomeVideo); // 只写操作
+    const video = useAtomValue(categoryVideo);      // 只读状态
+    const setCategoryVideo = useSetAtom(getCategoryVideo); // 只写操作
     const [searchParams] = useSearchParams();
     const category_id = searchParams.get('category_id');
     const category_name = searchParams.get('category_name');
 
     useEffect(() => {
-        setHomeVideo({ category_id, page: 1, size: 12 });
-    }, [setHomeVideo]);
+        setCategoryVideo({ category_id, page: 1, size: 24 });
+    }, [setCategoryVideo]);
 
-    const renderHomeVideo = () => {
+    const renderVideo = () => {
         return video.map((item, key) => {
             return <div key={key}
                 className="relative group bg-[#1c1c1c] rounded overflow-hidden shadow hover:shadow-lg transition">
@@ -53,18 +53,10 @@ const Home = () => {
             <Categories />
 
             <section className="px-6 py-12 max-w-7xl mx-auto">
-                <h2 className="text-2xl font-bold mb-6 border-l-4 border-green-500 pl-3">{ category_name || 'Trending'}</h2>
+                <h2 className="text-2xl font-bold mb-6 border-l-4 border-green-500 pl-3">{ category_name }</h2>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    {renderHomeVideo()}
-                </div>
-            </section>
-
-            <section className="px-6 py-12 max-w-7xl mx-auto">
-                <h2 className="text-2xl font-bold mb-6 border-l-4 border-green-500 pl-3">New</h2>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    {renderHomeVideo()}
+                    {renderVideo()}
                 </div>
             </section>
 
@@ -82,4 +74,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Category;

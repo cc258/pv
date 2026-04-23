@@ -2,11 +2,13 @@ import React, { lazy } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 
 const Home = lazy(() => import('./pages/home/home'));
+const Category = lazy(() => import('./pages/category/category'));
 const Play = lazy(() => import('./pages/play/play'));
 
 export const PATH = {
   MAIN: '/',
   HOME: '/home',
+  CATEGORY: '/category',
   PLAY: '/play/:id',
 };
 
@@ -15,6 +17,12 @@ export const ROUTERS = [
     path: PATH.MAIN,
     element: <Home />,
     title: 'HOME',
+    nav: true,
+  },
+  {
+    path: PATH.CATEGORY,
+    element: <Category />,
+    title: 'CATEGORY',
     nav: true,
   },
   {

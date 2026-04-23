@@ -59,7 +59,7 @@ function SearchForm(props: {
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label={t['searchTable.columns.categories']} field="categories">
+            <Form.Item label={t['searchTable.columns.categories']} field="category_id">
               <Input allowClear />
             </Form.Item>
           </Col>

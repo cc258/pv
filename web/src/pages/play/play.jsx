@@ -3,6 +3,8 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {useAtom} from 'jotai';
 
 import {getVideo} from './play.jotai';
+import Category from "../../components/category/category.jsx";
+import Categories from "../../components/categories/categories.jsx";
 
 const Play = () => {
     const navigate = useNavigate();
@@ -22,66 +24,10 @@ const Play = () => {
                         <button id="menu-btn" className="md:hidden text-white text-2xl">&#9776;</button>
                         <h1 onClick={() => navigate('/')} className="text-xl font-bold text-green-500">PV</h1>
                     </div>
-                    {/* <nav className="hidden md:flex space-x-6 text-sm">
-                        <a href="#" className="hover:text-green-400">Home</a>
-                        <a href="#" className="hover:text-green-400">Trending</a>
-                        <a href="#" className="hover:text-green-400">Genres</a>
-                        <a href="#" className="hover:text-green-400">Movies</a>
-                        <a href="#" className="hover:text-green-400">Login</a>
-                    </nav> */}
                 </div>
             </header>
 
-            <div className="flex flex-wrap w-full p-6 gap-2 md:gap-2 items-center text-sm text-white md:text-md">
-
-                <a href="#" className="bg-cyan-500 rounded px-2 py-1">
-                    Copywriting
-                </a>
-
-                <a href="#" className="bg-cyan-500 rounded px-2 py-1">
-                    Image
-                    Generation
-                </a>
-
-                <a href="#" className="bg-cyan-500 rounded px-2 py-1">
-                    Content
-                    Creation
-                </a>
-
-                <a href="#" className="bg-cyan-500 rounded px-2 py-1">
-                    Video
-                    Generation
-                </a>
-
-                <a href="#" className="bg-cyan-500 rounded px-2 py-1">
-                    Audio
-                    Generation
-                </a>
-
-                <a href="#" className="bg-cyan-500 rounded px-2 py-1">
-                    Design
-                </a>
-
-                <a href="#" className="bg-cyan-500 rounded px-2 py-1">
-                    Photo
-                    Editing
-                </a>
-
-                <a href="#" className="bg-cyan-500 rounded px-2 py-1">
-                    Writing
-                    Assistant
-                </a>
-
-                <a href="#" className="bg-cyan-500 rounded px-2 py-1">
-                    Project
-                    Management
-                </a>
-
-                <a href="#" className="bg-cyan-500 rounded px-2 py-1">
-                    Video
-                    Editing
-                </a>
-            </div>
+            <Categories />
 
             <main className="flex-grow max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
 
