@@ -46,19 +46,18 @@ const Play = () => {
                         </video>
                     </div>
 
-                    <div className="flex justify-between items-center text-gray-400 text-sm font-semibold">
-                        <button id="prev-ep"
-                                className="px-3 py-1 rounded bg-green-700 hover:bg-green-800 disabled:opacity-50"
-                                disabled>Previous Episode
-                        </button>
-                        <span id="episode-info" className="text-green-400">Episode 1 - {video.video_name}</span>
-                        <button id="next-ep" className="px-3 py-1 rounded bg-green-700 hover:bg-green-800">Next Episode
-                        </button>
+                    <div className="flex justify-between items-center text-green-400 font-semibold">
+
+                        <span id="episode-info">{video.video_name}</span>
+
                     </div>
 
+                    <p className="text-xs text-gray-300 leading-relaxed">
+                        {video.tags}
+                    </p>
+
                     <p className="text-gray-300 leading-relaxed">
-                        Eren lives in a world where enormous walls protect humanity from man-eating giants known as
-                        Titans. But when a colossal Titan breaks the wall, everything changes.
+                        {video.comment}
                     </p>
 
                 </section>

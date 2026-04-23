@@ -21,7 +21,7 @@ const Category = () => {
         return video.map((item, key) => {
             return <div key={key}
                 className="relative group bg-[#1c1c1c] rounded overflow-hidden shadow hover:shadow-lg transition">
-                <img src={item.cover || 'https://cdn.myanimelist.net/images/anime/5/87048.jpg'} alt="Attack on Titan"
+                <img src={item.cover || 'https://cdn.myanimelist.net/images/anime/5/87048.jpg'} alt={item.name}
                     className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div
                     className="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
@@ -31,10 +31,8 @@ const Category = () => {
                 </div>
                 <div className="p-2">
                     <h3 className="text-sm font-semibold truncate">{item.video_name}</h3>
-                    <p className="text-xs text-gray-400">24 eps • {item.tags}</p>
+                    <p className="text-xs text-gray-400">{item.tags}</p>
                 </div>
-                <span
-                    className="absolute top-2 left-2 bg-green-600 text-white text-xs px-2 py-1 rounded">Ep 24</span>
             </div>
         })
     }
