@@ -112,7 +112,7 @@ function SearchTable() {
             <Button onClick={()=>{history.push(`/list/video-details`);}} type="primary" icon={<IconPlus />}>
               {t['searchTable.operations.add']}
             </Button>
-            <Button>{t['searchTable.operations.upload']}</Button>
+            {/* <Button>{t['searchTable.operations.upload']}</Button> */}
           </Space>
           <Space>
             <Button icon={<IconDownload />}>
