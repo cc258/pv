@@ -3,7 +3,6 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {useAtom} from 'jotai';
 
 import {getVideo} from './play.jotai';
-import Category from "../../components/category/category.jsx";
 import Categories from "../../components/categories/categories.jsx";
 
 const Play = () => {

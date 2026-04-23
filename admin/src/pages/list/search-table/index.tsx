@@ -79,7 +79,7 @@ function SearchTable() {
           ...pagination,
           current,
           pageSize,
-          total: res.data.total,
+          total: res.total,
         });
         setLoading(false);
       });
