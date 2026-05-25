@@ -28,7 +28,6 @@ export function getColumns(
       dataIndex: 'index',
       render: (_, __, index: number) => <Text>{index + 1}</Text>,
       headerCellStyle: { width: '50px', textAlign: 'center' },
-      // render: (value) => <Text copyable>{value}</Text>,
     },
     {
       title: t['searchTable.columns.name'],
@@ -46,10 +45,10 @@ export function getColumns(
       title: t['searchTable.columns.tags'],
       dataIndex: 'tags',
     },
-    {
-      title: t['searchTable.columns.categories'],
-      dataIndex: 'categories',
-    },
+    // {
+    //   title: t['searchTable.columns.categories'],
+    //   dataIndex: 'categories',
+    // },
 
     {
       title: t['searchTable.columns.operations'],

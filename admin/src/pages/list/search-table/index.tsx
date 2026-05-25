@@ -30,7 +30,7 @@ function SearchTable() {
   const t = useLocale(locale);
 
 
-  const actionType = async(r ,type)=>{
+  const actionType = (r ,type)=>{
     if(type == 'view'){
       history.push(`/list/video-details?id=${r.id}`);
     }else if(type == 'del'){
