@@ -11,3 +11,17 @@ export const getVideo = atom((get) => get(video), async (get, set, id) => {
     set(video, res);
   }
 });
+
+export const trendingVideo = atom([]);
+
+export const getTrendingVideo = atom(
+  (get) => get(trendingVideo),
+  async (get, set, params) => {
+    const res = await request.get('/video', { params: { sort: 'hot', size: 6, ...params } });
+
+    const items = res.data;
+    if (items) {
+      set(trendingVideo, items);
+    }
+  }
+);

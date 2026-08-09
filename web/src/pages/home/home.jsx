@@ -43,7 +43,7 @@ const Home = () => {
                 <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <button id="menu-btn" className="md:hidden text-white text-2xl">&#9776;</button>
-                        <h1 onClick={() => navigate('/')} className="text-xl font-bold text-green-500">PV</h1>
+                        <h1 onClick={() => navigate('/')} className="text-xl font-bold text-green-500">PV 朋友影视</h1>
                     </div>
                 </div>
             </header>
