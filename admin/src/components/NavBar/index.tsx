@@ -145,7 +145,7 @@ function Navbar({ show }: { show: boolean }) {
       <div className={styles.left}>
         <div className={styles.logo}>
           <Logo />
-          <div className={styles['logo-name']}>Arco Pro</div>
+          <div className={styles['logo-name']}>朋友影视-后台管理</div>
         </div>
       </div>
       <ul className={styles.right}>
