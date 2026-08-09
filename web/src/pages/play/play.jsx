@@ -80,14 +80,11 @@ const Play = () => {
                             return (
                                 <li key={item.id}
                                     onClick={() => navigate(`/play/${item.id}`)}
-                                    className="flex items-center gap-3 bg-[#1c1c1c] rounded overflow-hidden shadow hover:shadow-lg hover:bg-[#242424] transition cursor-pointer">
-                                    <span className={`shrink-0 w-7 h-7 flex items-center justify-center text-xs font-bold ${rankColor}`}>
+                                    className="flex items-center gap-3 bg-[#1c1c1c] rounded px-3 py-3 shadow hover:shadow-lg hover:bg-[#242424] transition cursor-pointer">
+                                    <span className={`shrink-0 w-7 h-7 flex items-center justify-center text-xs font-bold rounded ${rankColor}`}>
                                         {rank}
                                     </span>
-                                    <img src={item.cover || 'https://cdn.myanimelist.net/images/anime/5/87048.jpg'}
-                                         alt={item.video_name}
-                                         className="w-16 h-20 object-cover"/>
-                                    <div className="flex-1 min-w-0 pr-3 py-2">
+                                    <div className="flex-1 min-w-0">
                                         <h3 className="text-sm font-semibold truncate">{item.video_name}</h3>
                                         <p className="text-xs text-gray-400 truncate mt-1">{item.tags}</p>
                                     </div>
