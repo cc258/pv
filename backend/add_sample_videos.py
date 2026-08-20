@@ -8,10 +8,11 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from sqlmodel import Session
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
 from backend.app.core.deps import engine
 from backend.app.models.videos import Video, Category, VideoCategory
-from sqlmodel import select
 
 VIDEOS = [
     # Drama
@@ -85,15 +86,15 @@ VIDEOS = [
 
 def add_sample_videos():
     with Session(engine) as session:
-        categories = session.exec(select(Category)).all()
+        categories = session.execute(select(Category)).scalars().all()
         cat_map = {c.name: c for c in categories}
         print(f"Found categories: {list(cat_map.keys())}")
 
         added_count = 0
         for video_data in VIDEOS:
-            existing = session.exec(
+            existing = session.execute(
                 select(Video).where(Video.video_name == video_data["video_name"])
-            ).first()
+            ).scalars().first()
             if existing:
                 continue
 

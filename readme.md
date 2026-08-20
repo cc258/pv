@@ -1,6 +1,6 @@
 # PV - Video Platform
 
-一个基于 FastAPI + SQLModel + React + Github actions 的视频管理平台，支持 RBAC 权限管理。
+一个基于 FastAPI + SQLAlchemy 2.0 + React + Github actions 的视频管理平台，支持 RBAC 权限管理。
 
 ## 在线地址
 

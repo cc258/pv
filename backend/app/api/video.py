@@ -1,10 +1,10 @@
 import uuid
 from fastapi import APIRouter, Depends, Query, HTTPException
-from sqlmodel import Session, select, func, delete
-from sqlalchemy.orm import selectinload
+from sqlalchemy import select, func, delete
+from sqlalchemy.orm import Session, selectinload
 
 from backend.app.core.deps import get_db, get_current_user
-from backend.app.models.videos import Video, VideoCategory
+from backend.app.models.videos import Video, VideoCategory, VideoCreate, VideoUpdate
 from backend.app.models.user import User
 
 router = APIRouter(prefix="/video", tags=["video"])
@@ -33,8 +33,8 @@ async def get_video_list(
         query = query.where(Video.id.in_(subquery))
         count_query = count_query.where(Video.id.in_(subquery))
 
-    total = session.scalar(count_query)
-    videos = session.exec(query.offset((page - 1) * size).limit(size)).all()
+    total = session.execute(count_query).scalar()
+    videos = session.execute(query.offset((page - 1) * size).limit(size)).scalars().all()
 
     result = []
     for v in videos:
@@ -62,7 +62,7 @@ async def get_video(
     video = session.get(Video, video_id)
     if not video:
         raise HTTPException(status_code=404, detail="video not found")
-    
+
     return {
         "id": str(video.id),
         "video_name": video.video_name,
@@ -78,17 +78,18 @@ async def get_video(
 
 @router.post("")
 async def post_video(
-    video_in: dict,
+    video_in: VideoCreate,
     session: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    category_ids = video_in.pop("category_ids", [])
-    video = Video.model_validate(video_in)
+    # Pydantic VideoCreate → ORM Video：exclude={'category_ids'} 安全地去掉关联字段
+    create_data = video_in.model_dump(exclude={"category_ids"})
+    video = Video(**create_data)
     session.add(video)
     session.commit()
     session.refresh(video)
 
-    for cat_id in category_ids:
+    for cat_id in video_in.category_ids or []:
         session.add(VideoCategory(video_id=video.id, category_id=cat_id))
     session.commit()
 
@@ -104,7 +105,7 @@ async def del_video(
     video = session.get(Video, video_id)
     if not video:
         raise HTTPException(status_code=404, detail="Video not found")
-    session.exec(delete(VideoCategory).where(VideoCategory.video_id == video_id))
+    session.execute(delete(VideoCategory).where(VideoCategory.video_id == video_id))
     session.delete(video)
     session.commit()
     return {"message": "deleted"}
@@ -113,7 +114,7 @@ async def del_video(
 @router.put("/{video_id}")
 async def put_video(
     video_id: uuid.UUID,
-    video_in: dict,
+    video_in: VideoUpdate,
     session: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -121,12 +122,15 @@ async def put_video(
     if not video:
         raise HTTPException(status_code=404, detail="Video not found")
 
-    category_ids = video_in.pop("category_ids", None)
-    video.sqlmodel_update(video_in)
+    # exclude_unset=True：只更新前端实际传了的字段（部分更新）
+    update_data = video_in.model_dump(exclude_unset=True, exclude={"category_ids"})
+    for field_name, new_value in update_data.items():
+        setattr(video, field_name, new_value)
 
-    if category_ids is not None:
-        session.exec(delete(VideoCategory).where(VideoCategory.video_id == video_id))
-        for cat_id in category_ids:
+    # category_ids 为 None 表示本次不调整分类；为 [] 或具体 list 才覆盖重写
+    if video_in.category_ids is not None:
+        session.execute(delete(VideoCategory).where(VideoCategory.video_id == video_id))
+        for cat_id in video_in.category_ids:
             session.add(VideoCategory(video_id=video.id, category_id=cat_id))
 
     session.add(video)

@@ -1,95 +1,129 @@
 from datetime import datetime, UTC
-from pydantic import BaseModel, EmailStr
-from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, List
+from pydantic import BaseModel, EmailStr, ConfigDict, Field
 
-class UserBase(SQLModel):
-    username: str = Field(min_length=3, max_length=50)
-    password: str = Field(default=None, nullable=False)
-    gender: int = Field(default=0, description="0: 未知，1:男，2:女")
-    status: int = Field(default=1, description="0: 未启用，1:正常，2:禁止")
-    email: EmailStr = Field(default=None, max_length=255)
+from sqlalchemy import String, Integer, ForeignKey, DateTime, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from backend.app.core.deps import Base
+
+
+# ============== Pydantic Schemas ==============
+
+class UserBase(BaseModel):
+    username: str = Field(..., min_length=1, max_length=50)
+    password: str = Field(..., min_length=1, max_length=128)
+    gender: int = 0
+    status: int = 1
+    email: Optional[EmailStr] = None
 
 
 class UserCreate(UserBase):
-    password: str = Field(min_length=6, max_length=100)
+    pass
 
 
-class UserUpdate(SQLModel):
+class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
-    username: Optional[str] = None
+    username: Optional[str] = Field(None, min_length=1, max_length=50)
     gender: Optional[int] = None
     status: Optional[int] = None
-    password: Optional[str] = None
+    password: Optional[str] = Field(None, min_length=1, max_length=128)
 
 
-class UserResponse(UserBase):
+class UserResponse(BaseModel):
     id: int
+    username: str
+    gender: int
+    status: int
+    email: Optional[EmailStr] = None
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
-# 中间表
-class UserRole(SQLModel, table=True):
-    user_id: int = Field(
-        foreign_key="user.id",
+# ============== ORM Models ==============
+
+class UserRole(Base):
+    __tablename__ = "user_role"
+
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("user.id", ondelete="CASCADE"),
         primary_key=True,
-        ondelete="CASCADE"
     )
-    role_id: int = Field(
-        foreign_key="role.id",
+    role_id: Mapped[int] = mapped_column(
+        ForeignKey("role.id", ondelete="CASCADE"),
         primary_key=True,
-        ondelete="CASCADE"
     )
-    assigned_at: datetime = Field(default_factory=datetime.utcnow)
-
-
-class RolePermission(SQLModel, table=True):
-    role_id: int = Field(
-        foreign_key="role.id",
-        primary_key=True,
-        ondelete="CASCADE"
-    )
-    permission_id: int = Field(
-        foreign_key="permission.id",
-        primary_key=True,
-        ondelete="CASCADE"
+    assigned_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
     )
 
 
-class Permission(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
-    code: str = Field(unique=True, index=True)
-    description: str = Field(default="")
+class RolePermission(Base):
+    __tablename__ = "role_permission"
 
-    roles: List["Role"] = Relationship(
+    role_id: Mapped[int] = mapped_column(
+        ForeignKey("role.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    permission_id: Mapped[int] = mapped_column(
+        ForeignKey("permission.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+
+
+class Permission(Base):
+    __tablename__ = "permission"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    code: Mapped[str] = mapped_column(String(100), unique=True, index=True)
+    description: Mapped[str] = mapped_column(String(255), default="")
+
+    roles: Mapped[List["Role"]] = relationship(
+        secondary="role_permission",
         back_populates="permissions",
-        link_model=RolePermission
     )
 
 
-class Role(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
-    name: str = Field(unique=True)
-    description: str = Field(default="")
+class Role(Base):
+    __tablename__ = "role"
 
-    users: List["User"] = Relationship(
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(50), unique=True)
+    description: Mapped[str] = mapped_column(String(255), default="")
+
+    users: Mapped[List["User"]] = relationship(
+        secondary="user_role",
         back_populates="roles",
-        link_model=UserRole
     )
-    permissions: List["Permission"] = Relationship(
+    permissions: Mapped[List["Permission"]] = relationship(
+        secondary="role_permission",
         back_populates="roles",
-        link_model=RolePermission
     )
 
 
-class User(UserBase, table=True):
-    id: int = Field(default=None, primary_key=True)
-    hashed_password: str = Field(nullable=False)
-    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+class User(Base):
+    __tablename__ = "user"
 
-    roles: List["Role"] = Relationship(back_populates="users", link_model=UserRole)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(String(50), unique=True, index=True)
+    hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
+    gender: Mapped[int] = mapped_column(Integer, default=0, doc="0: 未知，1:男，2:女")
+    status: Mapped[int] = mapped_column(Integer, default=1, doc="0: 未启用，1:正常，2:禁止")
+    email: Mapped[Optional[str]] = mapped_column(String(254), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+    roles: Mapped[List["Role"]] = relationship(
+        secondary="user_role",
+        back_populates="users",
+    )

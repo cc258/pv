@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlmodel import Session, select
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 from typing import List
 
 from backend.app.core.deps import get_db, get_current_user
@@ -13,8 +14,8 @@ async def get_roles_permissions(
     session: Session = Depends(get_db),
 ):
     """获取所有角色和权限数据"""
-    roles = session.exec(select(Role)).all()
-    permissions = session.exec(select(Permission)).all()
+    roles = session.execute(select(Role)).scalars().all()
+    permissions = session.execute(select(Permission)).scalars().all()
 
     result = []
     for role in roles:
@@ -56,12 +57,12 @@ async def toggle_role_permission(
         raise HTTPException(status_code=404, detail="权限不存在")
 
     if action == "add":
-        existing = session.exec(
+        existing = session.execute(
             select(RolePermission).where(
                 RolePermission.role_id == role_id,
                 RolePermission.permission_id == permission_id,
             )
-        ).first()
+        ).scalars().first()
         if not existing:
             role_permission = RolePermission(
                 role_id=role_id,
@@ -71,12 +72,12 @@ async def toggle_role_permission(
             session.commit()
 
     elif action == "remove":
-        role_permission = session.exec(
+        role_permission = session.execute(
             select(RolePermission).where(
                 RolePermission.role_id == role_id,
                 RolePermission.permission_id == permission_id,
             )
-        ).first()
+        ).scalars().first()
         if role_permission:
             session.delete(role_permission)
             session.commit()

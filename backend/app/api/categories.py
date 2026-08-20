@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session, select
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 import uuid
 
 from backend.app.core.deps import get_db, get_current_user
@@ -14,7 +15,7 @@ async def get_categories(
     session: Session = Depends(get_db),
 ):
     """获取所有分类"""
-    return session.exec(select(Category)).all()
+    return session.execute(select(Category)).scalars().all()
 
 
 @router.post("")
@@ -24,7 +25,7 @@ async def create_category(
     session: Session = Depends(get_db),
 ):
     """创建分类"""
-    existing = session.exec(select(Category).where(Category.name == name)).first()
+    existing = session.execute(select(Category).where(Category.name == name)).scalars().first()
     if existing:
         raise HTTPException(status_code=400, detail="分类已存在")
 
@@ -79,12 +80,12 @@ async def add_video_to_category(
     if not video:
         raise HTTPException(status_code=404, detail="视频不存在")
 
-    existing = session.exec(
+    existing = session.execute(
         select(VideoCategory).where(
             VideoCategory.video_id == video.id,
             VideoCategory.category_id == category_id,
         )
-    ).first()
+    ).scalars().first()
 
     if existing:
         return {"message": "视频已在该分类中"}
@@ -103,12 +104,12 @@ async def remove_video_from_category(
 ):
     """将视频从分类移除"""
     import uuid
-    video_category = session.exec(
+    video_category = session.execute(
         select(VideoCategory).where(
             VideoCategory.video_id == uuid.UUID(video_id),
             VideoCategory.category_id == category_id,
         )
-    ).first()
+    ).scalars().first()
 
     if not video_category:
         raise HTTPException(status_code=404, detail="视频不在该分类中")
