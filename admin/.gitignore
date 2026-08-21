@@ -1,44 +1,80 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ===========================
+# admin 子项目 .gitignore
+# 根 .gitignore 已覆盖：.venv / node_modules / .DS_Store / *.log / dist /
+#                       .pnpm-store / .env* / .idea / *.swp / .vite 等
+# 这里只保留 admin 前端专用、或希望 clone 下来就能用的最小集合。
+# 如果你单独把 admin/ 拉出去做独立仓库，这些规则就会生效。
+# ===========================
 
-# dependencies
+# --- 依赖 ---
 /node_modules
 /.pnp
 .pnp.js
+.pnp.cjs
+.pnp.data.*
+.pnpm-store
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+.yarn-integrity
 
-# testing
+# --- 测试 / 覆盖率 ---
 /coverage
+/htmlcov
 
-# next.js
+# --- 框架构建产物 ---
+# Next.js (历史兼容，这个 admin 实际是 Vite + Arco)
 /.next/
 /out/
-
-# production
+# Vite / React
+/dist
+/dist-ssr
 /build
+/.vite
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# --- 日志 / 调试 ---
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# local env files
+# --- 本地环境变量 / 本地域名配置 ---
+*.local
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# vercel
+# --- 部署平台 ---
 .vercel
+.netlify
 
-# typescript
+# --- TypeScript / ESLint / Stylelint 缓存 ---
 *.tsbuildinfo
-
-
-# eslint
+*.tsbuildinfo
 .eslintcache
-
-# stylelint
 .stylelintcache
+.babel-cache
+.parcel-cache
+.cache
+
+# --- 凭证 / 证书（本项目没用到，但防止你以后加 HTTPS 证书误提交）---
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# --- IDE（根已经有，这里再兜底，防子仓库独立）---
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db

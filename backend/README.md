@@ -2,6 +2,16 @@
 preview video project~! deploy 5
 
 
+# Quick Start
+```bash
+cd backend
+uv sync
+source .venv/bin/activate
+
+uvicorn app.main:app --reload --port 8000
+```
+
+
 # e2e 测试
 
 Playwright

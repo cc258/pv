@@ -42,13 +42,10 @@ export function getColumns(
       dataIndex: 'year',
     },
     {
-      title: t['searchTable.columns.tags'],
-      dataIndex: 'tags',
+      title: t['searchTable.columns.categories'],
+      dataIndex: 'categories',
+      render: (categories: Object[]) => categories.map((category) => category.name).join(', '),
     },
-    // {
-    //   title: t['searchTable.columns.categories'],
-    //   dataIndex: 'categories',
-    // },
 
     {
       title: t['searchTable.columns.operations'],
