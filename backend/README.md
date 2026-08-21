@@ -8,6 +8,9 @@ cd backend
 uv sync
 source .venv/bin/activate
 
+uv run init_db.py
+uv run add_sample_video.py
+
 uvicorn app.main:app --reload --port 8000
 ```
 

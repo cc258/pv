@@ -139,16 +139,14 @@ cython_debug/
 !.env.example
 .envrc
 
-# --- SQLite 数据库（本项目使用的）---
-#   不要提交任何 .db 文件；需要种子数据用 backend/init_db.py + add_sample_videos.py
-*.db
+# --- SQLite 数据库 ---
+#   注意：本项目选择提交 backend/app/database.db 到仓库作为种子数据库；
+#   因此不在这里忽略任何 *.db。运行时产生的 journal/wal/shm 是临时文件，仍需忽略。
 *.db-journal
 *.db-wal
 *.db-shm
-*.sqlite
-*.sqlite3
+*.sqlite-journal
 *.sqlite3-journal
-backend/app/database.db
 
 # ===========================
 # 二、前端 / Node（admin/  web/）

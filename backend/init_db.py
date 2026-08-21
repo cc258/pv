@@ -39,7 +39,7 @@ def init_database():
             Permission(code="video:list", description="查看视频列表"),
             Permission(code="video:upload", description="上传视频"),
             Permission(code="video:edit", description="编辑视频"),
-            Permission(code="video:delete", description="删除视频"),
+            Permission(code="video:delete", description="删除单个视频"),
             Permission(code="role:list", description="查看角色列表"),
             Permission(code="role:add", description="添加角色"),
             Permission(code="role:edit", description="编辑角色"),
